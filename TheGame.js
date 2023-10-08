@@ -117,8 +117,15 @@ const main = () => {
         const person = data.find(person => person.name === name);
         if (person) {
             const debtCount = person.dept.length;
-            const debtString = `${person.name}, ${person.age}, doit ${debtCount} repas à `;
-            return debtString + (debtCount === 1 ? data.filter(p => p.dept.includes(person.id))[0].name : 'personnes différentes');
+            if (debtCount === 0) {
+                return `${name} ne doit aucun repas.`;
+            } else if (debtCount === 1) {
+                const creditor = data.find(p => p.id === person.dept[0]);
+                return `${person.name}, ${person.age} ans, doit un repas à ${creditor.name}.`;
+            } else {
+                const creditors = person.dept.map(debtorId => data.find(p => p.id === debtorId).name);
+                return `${person.name}, ${person.age} ans, il doit ${debtCount} repas à ${creditors.join(' et ')}.`;
+            }
         } else {
             return `${name} n'a pas été trouvé dans la liste.`;
         }
