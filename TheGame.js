@@ -23,10 +23,11 @@ const main = () => {
     const nameListElement = document.getElementById("nameList");
     const sortByNameButton = document.getElementById("sortByNameButton");
     const sortByAgeButton = document.getElementById("sortByAgeButton");
+    const mostDebtsPersonElement = document.getElementById("mostDebtsPerson");
 
     const originalData = [...data];
     let isSortedByName = false;
-    let isSortedByAge = 0; // 0: none 1: older->young 2: young->older
+    let isSortedByAge = 0;
 
     const populateNameList = (element, persons) => {
         element.innerHTML = "";
@@ -35,6 +36,25 @@ const main = () => {
             listItem.textContent = `${person.name}, ${person.age} ans`;
             element.appendChild(listItem);
         });
+    };
+
+    //Find dude in debt of restaurants
+    const findPersonWithMostDebts = () => {
+        const personWithMostDebts = originalData.reduce((maxDebtsPerson, currentPerson) => {
+            if (currentPerson.dept.length > maxDebtsPerson.dept.length) {
+                return currentPerson;
+            } else {
+                return maxDebtsPerson;
+            }
+        }, originalData[0]);
+
+        return personWithMostDebts;
+    };
+
+    //update because sort reload page
+    const updateMostDebtsPerson = () => {
+        const personWithMostDebts = findPersonWithMostDebts();
+        mostDebtsPersonElement.textContent = `${personWithMostDebts.name} est la personne qui doit le plus de repas avec ${personWithMostDebts.dept.length} repas !`;
     };
 
     populateNameList(nameListElement, originalData);
@@ -49,6 +69,7 @@ const main = () => {
         }
         isSortedByName = !isSortedByName;
         isSortedByAge = 0;
+        updateMostDebtsPerson();
     });
 
     // Age Sort Button ELement
@@ -66,7 +87,10 @@ const main = () => {
             isSortedByAge = 0;
         }
         isSortedByName = false;
+        updateMostDebtsPerson();
     });
+    //Update status in-case recharge page or sorting
+    updateMostDebtsPerson();
 }
 
 main();
