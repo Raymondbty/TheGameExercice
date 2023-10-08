@@ -21,7 +21,6 @@ const data = [
 
 const main = () => {
     const nameListElement = document.getElementById("nameList");
-    const sortedNameListElement = document.getElementById("sortedNameList");
     const sortButton = document.getElementById("sortButton");
 
     const populateNameList = (element, names) => {
@@ -33,13 +32,13 @@ const main = () => {
         });
     };
 
+    // Button Element
     const names = data.map(person => person.name);
     populateNameList(nameListElement, names);
 
-    //Button element
     sortButton.addEventListener("click", () => {
         const sortedNames = [...names].sort();
-        populateNameList(sortedNameListElement, sortedNames);
+        populateNameList(nameListElement, sortedNames);
     });
 }
 
