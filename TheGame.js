@@ -4,6 +4,7 @@
 // On Linux FEDORA 35
 // Have a nice day
 
+// Data list
 const data = [
     { id: 0, name: 'Sergio', age: 18, dept: [2] },
     { id: 1, name: 'Maxime', age: 52, dept: [4, 8] },
@@ -32,6 +33,7 @@ const main = () => {
     let isSortedByName = false;
     let isSortedByAge = 0;
 
+    // Link to HTML
     const populateNameList = (element, persons) => {
         element.innerHTML = "";
         persons.forEach(person => {
@@ -40,7 +42,7 @@ const main = () => {
             element.appendChild(listItem);
         });
     };
-
+    // Find person with most debts
     const findPersonWithMostDebts = () => {
         let maxDebtPerson = null;
         let maxDebtCount = 0;
@@ -54,7 +56,7 @@ const main = () => {
 
         return maxDebtPerson;
     };
-
+    // Find person owed most meals
     const findPersonOwedMostMeals = () => {
         let maxMealsPerson = null;
         let maxMealsCount = 0;
@@ -69,7 +71,7 @@ const main = () => {
 
         return maxMealsPerson;
     };
-
+    // Update functions (on sort to not make them disapeer)
     const updateMostDebtsPerson = () => {
         const personWithMostDebts = findPersonWithMostDebts();
         mostDebtsPersonElement.textContent = `${personWithMostDebts.name} est la personne qui doit le plus de repas avec ${personWithMostDebts.dept.length} repas !`;
@@ -81,7 +83,7 @@ const main = () => {
     };
 
     populateNameList(nameListElement, originalData);
-
+    // Sort by name button
     sortByNameButton.addEventListener("click", () => {
         if (isSortedByName) {
             populateNameList(nameListElement, originalData);
@@ -94,7 +96,7 @@ const main = () => {
         updateMostDebtsPerson();
         updatePersonOwedMostMeals();
     });
-
+    // Sort by age button
     sortByAgeButton.addEventListener("click", () => {
         if (isSortedByAge === 0) {
             const sortedData = [...originalData].sort((a, b) => b.age - a.age);
@@ -112,7 +114,7 @@ const main = () => {
         updateMostDebtsPerson();
         updatePersonOwedMostMeals();
     });
-
+    //Prompt, warning, must be EXACT, can't take julien rather than Julien
     const findDebtByName = (name) => {
         const person = data.find(person => person.name === name);
         if (person) {
@@ -130,7 +132,7 @@ const main = () => {
             return `${name} n'a pas été trouvé dans la liste.`;
         }
     };
-
+    //launch prompt
     findDebtButton.addEventListener("click", () => {
         const nameToFind = prompt("Entrez le nom de la personne :");
         if (nameToFind) {
