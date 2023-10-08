@@ -21,33 +21,47 @@ const data = [
 
 const main = () => {
     const nameListElement = document.getElementById("nameList");
-    const sortButton = document.getElementById("sortButton");
+    const sortByNameButton = document.getElementById("sortByNameButton");
+    const sortByAgeButton = document.getElementById("sortByAgeButton");
 
-    const originalNames = data.map(person => person.name);
-    let isSorted = false;
+    const originalData = [...data];
+    let isSortedByName = false;
+    let isSortedByAge = false;
 
-    const populateNameList = (element, names) => {
+    const populateNameList = (element, persons) => {
         element.innerHTML = "";
-        names.forEach(name => {
+        persons.forEach(person => {
             const listItem = document.createElement("li");
-            listItem.textContent = name;
+            listItem.textContent = `${person.name}, ${person.age} ans`;
             element.appendChild(listItem);
         });
     };
 
-    populateNameList(nameListElement, originalNames);
+    populateNameList(nameListElement, originalData);
 
-    // Button Element
-    sortButton.addEventListener("click", () => {
-        if (isSorted) {
-            populateNameList(nameListElement, originalNames); // true/false rather than only-state ;)-
+    // Name Sort Button Element
+    sortByNameButton.addEventListener("click", () => {
+        if (isSortedByName) {
+            populateNameList(nameListElement, originalData);
         } else {
-            const sortedNames = [...originalNames].sort();
-            populateNameList(nameListElement, sortedNames);
+            const sortedData = [...originalData].sort((a, b) => a.name.localeCompare(b.name));
+            populateNameList(nameListElement, sortedData);
         }
-        isSorted = !isSorted;
+        isSortedByName = !isSortedByName;
+        isSortedByAge = false;
+    });
+
+    // Age Sort Button ELement
+    sortByAgeButton.addEventListener("click", () => {
+        if (isSortedByAge) {
+            populateNameList(nameListElement, originalData);
+        } else {
+            const sortedData = [...originalData].sort((a, b) => b.age - a.age);
+            populateNameList(nameListElement, sortedData);
+        }
+        isSortedByAge = !isSortedByAge;
+        isSortedByName = false;
     });
 }
 
 main();
-
