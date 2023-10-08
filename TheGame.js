@@ -5,6 +5,8 @@
 // Have a nice day
 
 const main = () => {
+    const outputElement = document.getElementById("output");
+    outputElement.textContent = "Html test";
 }
 
 main();
