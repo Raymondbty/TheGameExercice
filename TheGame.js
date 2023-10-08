@@ -26,7 +26,7 @@ const main = () => {
 
     const originalData = [...data];
     let isSortedByName = false;
-    let isSortedByAge = false;
+    let isSortedByAge = 0; // 0: none 1: older->young 2: young->older
 
     const populateNameList = (element, persons) => {
         element.innerHTML = "";
@@ -48,18 +48,23 @@ const main = () => {
             populateNameList(nameListElement, sortedData);
         }
         isSortedByName = !isSortedByName;
-        isSortedByAge = false;
+        isSortedByAge = 0;
     });
 
     // Age Sort Button ELement
     sortByAgeButton.addEventListener("click", () => {
-        if (isSortedByAge) {
-            populateNameList(nameListElement, originalData);
-        } else {
+        if (isSortedByAge === 0) {
             const sortedData = [...originalData].sort((a, b) => b.age - a.age);
             populateNameList(nameListElement, sortedData);
+            isSortedByAge = 1;
+        } else if (isSortedByAge === 1) {
+            const sortedData = [...originalData].sort((a, b) => a.age - b.age);
+            populateNameList(nameListElement, sortedData);
+            isSortedByAge = 2;
+        } else {
+            populateNameList(nameListElement, originalData);
+            isSortedByAge = 0;
         }
-        isSortedByAge = !isSortedByAge;
         isSortedByName = false;
     });
 }
