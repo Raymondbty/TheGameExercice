@@ -17,13 +17,14 @@ const data = [
     {id: 9,     name: 'Nathan',     age: 56,    dept: [4,6]},
     {id: 10,    name: 'Thibaut',    age: 29,    dept: []},
     {id: 11,    name: 'Hugo',       age: 18,    dept: [2,6]}
-]
+];
 
 const main = () => {
     const nameListElement = document.getElementById("nameList");
     const sortByNameButton = document.getElementById("sortByNameButton");
     const sortByAgeButton = document.getElementById("sortByAgeButton");
     const mostDebtsPersonElement = document.getElementById("mostDebtsPerson");
+    const personOwedMostMealsElement = document.getElementById("personOwedMostMeals");
 
     const originalData = [...data];
     let isSortedByName = false;
@@ -38,7 +39,7 @@ const main = () => {
         });
     };
 
-    //Find dude in debt of restaurants
+    // Find person with most debts
     const findPersonWithMostDebts = () => {
         const personWithMostDebts = originalData.reduce((maxDebtsPerson, currentPerson) => {
             if (currentPerson.dept.length > maxDebtsPerson.dept.length) {
@@ -51,15 +52,34 @@ const main = () => {
         return personWithMostDebts;
     };
 
-    //update because sort reload page
+    // Find person owed most meals
+    const findPersonOwedMostMeals = () => {
+        const personOwedMostMeals = originalData.reduce((maxOwedMealsPerson, currentPerson) => {
+            const currentOwedMeals = currentPerson.dept.length;
+            if (currentOwedMeals > maxOwedMealsPerson.dept.length) {
+                return currentPerson;
+            } else {
+                return maxOwedMealsPerson;
+            }
+        }, originalData[0]);
+
+        return personOwedMostMeals;
+    };
+
+    // Update functions
     const updateMostDebtsPerson = () => {
         const personWithMostDebts = findPersonWithMostDebts();
         mostDebtsPersonElement.textContent = `${personWithMostDebts.name} est la personne qui doit le plus de repas avec ${personWithMostDebts.dept.length} repas !`;
     };
 
+    const updatePersonOwedMostMeals = () => {
+        const personOwedMostMeals = findPersonOwedMostMeals();
+        personOwedMostMealsElement.textContent = `${personOwedMostMeals.name} est la personne à qui l'on doit le plus de repas : ${personOwedMostMeals.dept.length} repas.`;
+    };
+
     populateNameList(nameListElement, originalData);
 
-    // Name Sort Button Element
+    // Sort by name button
     sortByNameButton.addEventListener("click", () => {
         if (isSortedByName) {
             populateNameList(nameListElement, originalData);
@@ -70,9 +90,10 @@ const main = () => {
         isSortedByName = !isSortedByName;
         isSortedByAge = 0;
         updateMostDebtsPerson();
+        updatePersonOwedMostMeals();
     });
 
-    // Age Sort Button ELement
+    // Sort by age button
     sortByAgeButton.addEventListener("click", () => {
         if (isSortedByAge === 0) {
             const sortedData = [...originalData].sort((a, b) => b.age - a.age);
@@ -88,9 +109,10 @@ const main = () => {
         }
         isSortedByName = false;
         updateMostDebtsPerson();
+        updatePersonOwedMostMeals();
     });
-    //Update status in-case recharge page or sorting
     updateMostDebtsPerson();
-}
+    updatePersonOwedMostMeals();
+};
 
 main();
