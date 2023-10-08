@@ -21,12 +21,25 @@ const data = [
 
 const main = () => {
     const nameListElement = document.getElementById("nameList");
-    const names = data.map(person => person.name);
+    const sortedNameListElement = document.getElementById("sortedNameList");
+    const sortButton = document.getElementById("sortButton");
 
-    names.forEach(name => {
-        const listItem = document.createElement("li");
-        listItem.textContent = name;
-        nameListElement.appendChild(listItem);
+    const populateNameList = (element, names) => {
+        element.innerHTML = "";
+        names.forEach(name => {
+            const listItem = document.createElement("li");
+            listItem.textContent = name;
+            element.appendChild(listItem);
+        });
+    };
+
+    const names = data.map(person => person.name);
+    populateNameList(nameListElement, names);
+
+    //Button element
+    sortButton.addEventListener("click", () => {
+        const sortedNames = [...names].sort();
+        populateNameList(sortedNameListElement, sortedNames);
     });
 }
 
