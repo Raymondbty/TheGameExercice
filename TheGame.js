@@ -23,6 +23,9 @@ const main = () => {
     const nameListElement = document.getElementById("nameList");
     const sortButton = document.getElementById("sortButton");
 
+    const originalNames = data.map(person => person.name);
+    let isSorted = false;
+
     const populateNameList = (element, names) => {
         element.innerHTML = "";
         names.forEach(name => {
@@ -32,14 +35,19 @@ const main = () => {
         });
     };
 
-    // Button Element
-    const names = data.map(person => person.name);
-    populateNameList(nameListElement, names);
+    populateNameList(nameListElement, originalNames);
 
+    // Button Element
     sortButton.addEventListener("click", () => {
-        const sortedNames = [...names].sort();
-        populateNameList(nameListElement, sortedNames);
+        if (isSorted) {
+            populateNameList(nameListElement, originalNames); // true/false rather than only-state ;)-
+        } else {
+            const sortedNames = [...originalNames].sort();
+            populateNameList(nameListElement, sortedNames);
+        }
+        isSorted = !isSorted;
     });
 }
 
 main();
+
